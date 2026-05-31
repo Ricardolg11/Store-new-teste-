@@ -81,6 +81,11 @@ const API = {
     return request('POST', '/auth/login', { email, password });
   },
 
+  /** RF01 — Cadastro de novo usuário */
+  register(data) {
+    return request('POST', '/auth/register', data);
+  },
+
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
