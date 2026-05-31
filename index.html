@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Store da Nail — Login</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -22,6 +22,7 @@
     <button class="tab-btn" onclick="switchTab('cadastro')">Criar conta</button>
   </div>
 
+  <!-- ── PAINEL LOGIN ── -->
   <div class="tab-panel active" id="panel-login">
     <h2>Bem-vinda de volta 👋</h2>
     <p class="subtitle">Acesse o painel de gestão da sua loja</p>
@@ -43,6 +44,7 @@
 
     <button class="btn-primary" id="btnLogin" onclick="handleLogin()">Entrar</button>
 
+    <!-- usuário de teste -->
     <div class="test-hint">
       🧪 <strong>Usuário de teste (sem back-end):</strong><br>
       E-mail: <strong>teste@storedanail.com</strong><br>
@@ -51,6 +53,7 @@
     </div>
   </div>
 
+  <!-- ── PAINEL CADASTRO ── -->
   <div class="tab-panel" id="panel-cadastro">
     <h2>Criar conta</h2>
     <p class="subtitle">Preencha os dados para se cadastrar</p>
@@ -89,7 +92,9 @@
 
   <p class="footer-note">Store da Nail © 2025 — Sistema de Gestão</p>
 </div>
+
 <script src="js/api.js"></script>
 <script src="js/script.js"></script>
+ 
 </body>
 </html>

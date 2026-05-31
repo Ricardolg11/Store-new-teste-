@@ -1,10 +1,11 @@
+ /* ── usuário de teste embutido ────────────────────────── */
   const TEST_USER = {
     email:    'teste@storedanail.com',
     password: 'teste123',
     name:     'Usuário Teste',
   };
 
-
+  /* ── trocar aba ──────────────────────────────────────── */
   function switchTab(tab) {
     document.querySelectorAll('.tab-btn').forEach((b,i) =>
       b.classList.toggle('active', (i===0 && tab==='login') || (i===1 && tab==='cadastro'))
@@ -13,18 +14,19 @@
     document.getElementById('panel-cadastro').classList.toggle('active', tab==='cadastro');
   }
 
-
+  /* ── toggle senha ────────────────────────────────────── */
   function toggleVis(id) {
     const el = document.getElementById(id);
     el.type = el.type === 'password' ? 'text' : 'password';
   }
 
- 
+  /* ── preencher automático ────────────────────────────── */
   function autofill() {
     document.getElementById('loginEmail').value    = TEST_USER.email;
     document.getElementById('loginPassword').value = TEST_USER.password;
   }
 
+  /* ── login ───────────────────────────────────────────── */
   document.addEventListener('keydown', e => {
     if (e.key === 'Enter') {
       if (document.getElementById('panel-login').classList.contains('active')) handleLogin();

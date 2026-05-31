@@ -152,7 +152,7 @@
     }
 
     .pass-wrap { position: relative; }
-    .pass-wrap input { padding-right: 44px; }
+    .pass-wrap input { padding-right: 15px; }
     .toggle-pass {
       position: absolute;
       right: 14px; top: 50%;
