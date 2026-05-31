@@ -1,7 +1,6 @@
   const PKEY = 'sdn_products';
   let produtos = [], marcas = [], marcaAtiva = '', busca = '', sortKey = '', sortAsc = true, delId = null, nextId = 200;
 
-  // ── init ──────────────────────────────────────────────
   window.addEventListener('DOMContentLoaded', () => {
     if (!localStorage.getItem('token')) { window.location.href = '../index.html'; return; }
     const u = JSON.parse(localStorage.getItem('user') || '{}');
@@ -12,7 +11,6 @@
 
   function sair() { localStorage.removeItem('token'); localStorage.removeItem('user'); window.location.href = '../index.html'; }
 
-  // ── marcas ────────────────────────────────────────────
   async function carregarMarcas() {
     try { marcas = await API.getBrands(); }
     catch { marcas = ['Eudora','Natura','Boticario','Avon','MAC','Quem Disse Berenice']; }
@@ -33,7 +31,6 @@
 
   function selecionarMarca(m) { marcaAtiva = m; renderChips(marcas); aplicar(); }
 
-  // ── produtos ──────────────────────────────────────────
   async function carregarProdutos() {
     try { produtos = await API.getProducts(); }
     catch {
@@ -66,7 +63,6 @@
 
   function sortBy(k) { sortKey===k ? sortAsc=!sortAsc : (sortKey=k, sortAsc=true); aplicar(); }
 
-  // ── tabela ────────────────────────────────────────────
   function renderTabela(lista) {
     const tb = document.getElementById('tbody');
     if (!lista.length) { tb.innerHTML = `<tr><td colspan="7"><div class="empty">Nenhum produto encontrado.</div></td></tr>`; return; }
@@ -96,7 +92,7 @@
     }).join('');
   }
 
-  // ── crud ──────────────────────────────────────────────
+  // CRUD
   function abrirCriar() {
     limparForm();
     document.getElementById('formTitle').textContent = 'Novo Produto';
