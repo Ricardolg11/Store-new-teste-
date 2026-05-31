@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Catálogo de Produtos — Store da Nail</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rose:    #c9796a;
+      --rose-lt: #e8b4ac;
+      --cream:   #fdf6f0;
+      --warm:    #f5ebe3;
+      --brown:   #7a4f3a;
+      --text:    #2e1c14;
+      --muted:   #9c7b6e;
+      --border:  #e2d2ca;
+      --white:   #ffffff;
+      --green:   #5caa7f;
+      --yellow:  #d4a030;
+      --red:     #c9362c;
+      --shadow:  0 4px 24px rgba(122,79,58,.1);
+      --sidebar: 260px;
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── TOPBAR ───────────────────────────────────── */
+    .topbar {
+      height: 64px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 28px;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .brand-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--rose), var(--brown));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px; color: white; font-weight: 600;
+    }
+
+    .brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px; font-weight: 600;
+      color: var(--text);
+    }
+
+    .search-wrap {
+      flex: 1;
+      max-width: 500px;
+      position: relative;
+    }
+
+    .search-wrap input {
+      width: 100%;
+      padding: 10px 16px 10px 40px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      background: var(--warm);
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    .search-wrap input:focus { border-color: var(--rose); background: white; }
+
+    .search-wrap::before {
+      content: '🔍';
+      position: absolute;
+      left: 12px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+    }
+
+    .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+
+    .btn-logout {
+      background: var(--warm);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 14px;
+      font-size: 13px;
+      color: var(--muted);
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: background .2s;
+    }
+    .btn-logout:hover { background: var(--border); }
+
+    .avatar {
+      width: 36px; height: 36px;
+      background: var(--rose-lt);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+    }
+
+    /* ── LAYOUT ───────────────────────────────────── */
+    .layout {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+    }
+
+    /* ── SIDEBAR ──────────────────────────────────── */
+    .sidebar {
+      width: var(--sidebar);
+      background: var(--white);
+      border-right: 1px solid var(--border);
+      padding: 28px 20px;
+      flex-shrink: 0;
+      overflow-y: auto;
+    }
+
+    .sidebar h3 {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .brand-search {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .brand-search input {
+      width: 100%;
+      padding: 9px 12px 9px 34px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      background: var(--warm);
+      outline: none;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .brand-search input:focus { border-color: var(--rose); background: white; }
+
+    .brand-search::before {
+      content: '🔍';
+      position: absolute;
+      left: 9px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 12px;
+    }
+
+    .brand-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+
+    .chip {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      font-size: 13px;
+      cursor: pointer;
+      background: var(--warm);
+      color: var(--brown);
+      transition: all .18s;
+      white-space: nowrap;
+    }
+
+    .chip:hover, .chip.active {
+      background: var(--rose);
+      border-color: var(--rose);
+      color: white;
+    }
+
+    .chip.all { background: var(--brown); border-color: var(--brown); color: white; }
+    .chip.all:hover { opacity: .85; }
+
+    .sidebar-section { margin-bottom: 20px; }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .mini-card {
+      background: var(--warm);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .18s;
+      font-size: 12px;
+      color: var(--brown);
+    }
+
+    .mini-card:hover { border-color: var(--rose); }
+
+    .mini-card img {
+      width: 100%; height: 64px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      background: var(--border);
+    }
+
+    /* ── MAIN ─────────────────────────────────────── */
+    .main {
+      flex: 1;
+      padding: 32px 36px;
+      overflow-y: auto;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .page-header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    .header-actions { display: flex; gap: 10px; }
+
+    .btn-add {
+      display: flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--rose), var(--brown));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 20px;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity .2s, transform .15s;
+    }
+    .btn-add:hover { opacity: .9; transform: translateY(-1px); }
+
+    /* ── TABLE ────────────────────────────────────── */
+    .table-wrap {
+      background: var(--white);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead th {
+      padding: 14px 18px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+      color: var(--muted);
+      background: var(--warm);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background .15s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #fdf2ee; }
+
+    tbody td {
+      padding: 14px 18px;
+      font-size: 14px;
+      vertical-align: middle;
+    }
+
+    .prod-img {
+      width: 48px; height: 48px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: var(--warm);
+    }
+
+    .prod-img-placeholder {
+      width: 48px; height: 48px;
+      border-radius: 10px;
+      background: var(--warm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      color: var(--muted);
+    }
+
+    .brand-tag {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: var(--warm);
+      color: var(--brown);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .stock-bar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stock-bar {
+      width: 72px; height: 8px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .stock-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width .4s;
+    }
+
+    .stock-fill.high   { background: var(--green); }
+    .stock-fill.medium { background: var(--yellow); }
+    .stock-fill.low    { background: var(--red); }
+
+    .actions { display: flex; gap: 8px; }
+
+    .btn-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--white);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      transition: background .15s, border-color .15s;
+    }
+
+    .btn-icon:hover { background: var(--warm); }
+    .btn-icon.delete:hover { background: #fdecea; border-color: #f5c6c0; }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+
+    .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+
+    /* ── MODAL ────────────────────────────────────── */
+    .overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(46,28,20,.4);
+      backdrop-filter: blur(3px);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .overlay.open { display: flex; animation: fadeIn .2s ease; }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .modal {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 36px;
+      width: 100%;
+      max-width: 540px;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: slideUp .25s ease;
+    }
+
+    @keyframes slideUp {
+      from { opacity:0; transform: translateY(20px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+    }
+
+    .modal-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 600;
+    }
+
+    .btn-close {
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--white);
+      cursor: pointer;
+      font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s;
+    }
+    .btn-close:hover { background: var(--warm); }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-grid .full { grid-column: 1 / -1; }
+
+    .field-group { display: flex; flex-direction: column; gap: 6px; }
+
+    .field-group label {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: var(--brown);
+    }
+
+    .field-group input,
+    .field-group select {
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      background: var(--warm);
+      outline: none;
+      transition: border-color .2s, background .2s;
+    }
+
+    .field-group input:focus,
+    .field-group select:focus {
+      border-color: var(--rose);
+      background: var(--white);
+    }
+
+    .modal-footer {
+      display: flex;
+      gap: 10px;
+      margin-top: 28px;
+      justify-content: flex-end;
+    }
+
+    .btn-cancel {
+      padding: 11px 22px;
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .btn-cancel:hover { background: var(--warm); }
+
+    .btn-save {
+      padding: 11px 24px;
+      background: linear-gradient(135deg, var(--rose), var(--brown));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+    .btn-save:hover { opacity: .9; }
+
+    /* delete confirm modal */
+    .modal-delete .modal-body {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .btn-delete-confirm {
+      padding: 11px 22px;
+      background: var(--red);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+    .btn-delete-confirm:hover { opacity: .85; }
+
+    /* toast */
+    .toast {
+      position: fixed;
+      bottom: 28px; right: 28px;
+      background: var(--text);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      z-index: 999;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all .3s;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.success { background: var(--green); }
+    .toast.error   { background: var(--red); }
+  </style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <a class="brand" href="#">
+    <div class="brand-icon">SN</div>
+    <span class="brand-name">Store da Nail</span>
+  </a>
+  <div class="search-wrap">
+    <input type="text" id="globalSearch" placeholder="Pesquisar produto…" oninput="onSearch(this.value)"/>
+  </div>
+  <div class="topbar-right">
+    <button class="btn-logout" onclick="API.logout()">Sair</button>
+    <div class="avatar">💄</div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h3>Filtros</h3>
+
+    <div class="brand-search">
+      <input type="text" id="brandSearchInput" placeholder="Pesquisar por marca" oninput="filterBrandChips(this.value)"/>
+    </div>
+
+    <div class="brand-chips" id="brandChips">
+      <span class="chip all" onclick="selectBrand('')">Todas</span>
+    </div>
+
+    <!-- mini grid de produtos filtrados -->
+    <div class="sidebar-section">
+      <h3>Filtros rápidos</h3>
+      <div class="filter-grid" id="miniGrid"></div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="page-header">
+      <h1>Catálogo de Produtos</h1>
+      <div class="header-actions">
+        <button class="btn-add" onclick="openCreateModal()">
+          <span>＋</span> Novo Produto
+        </button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Imagem</th>
+            <th>Nome</th>
+            <th>Marca</th>
+            <th>Categoria</th>
+            <th>Preço Custo</th>
+            <th>Preço Venda</th>
+            <th>Estoque</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="productsTbody">
+          <tr><td colspan="8"><div class="empty-state"><div class="icon">💄</div><p>Carregando produtos…</p></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL CRIAR / EDITAR -->
+<div class="overlay" id="formOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="formTitle">Novo Produto</h2>
+      <button class="btn-close" onclick="closeModal('formOverlay')">✕</button>
+    </div>
+    <div class="form-grid">
+      <input type="hidden" id="productId"/>
+      <div class="field-group full">
+        <label>Nome do Produto</label>
+        <input type="text" id="fNome" placeholder="Ex: Matefix Lipstick"/>
+      </div>
+      <div class="field-group">
+        <label>Marca</label>
+        <select id="fMarca">
+          <option value="">Selecione…</option>
+          <option>Eudora</option>
+          <option>Natura</option>
+          <option>Boticario</option>
+          <option>Avon</option>
+          <option>MAC</option>
+          <option>Quem Disse Berenice</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Categoria</label>
+        <select id="fCategoria">
+          <option value="">Selecione…</option>
+          <option>Batom / Lipstick</option>
+          <option>Esmalte / Nail polish</option>
+          <option>Creme / Cosmetics</option>
+          <option>Perfume</option>
+          <option>Maquiagem</option>
+          <option>Skincare</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Preço de Custo (R$)</label>
+        <input type="number" id="fPrecoCusto" placeholder="0,00" min="0" step="0.01"/>
+      </div>
+      <div class="field-group">
+        <label>Preço de Venda (R$)</label>
+        <input type="number" id="fPrecoVenda" placeholder="0,00" min="0" step="0.01"/>
+      </div>
+      <div class="field-group">
+        <label>Estoque (unidades)</label>
+        <input type="number" id="fEstoque" placeholder="0" min="0"/>
+      </div>
+      <div class="field-group full">
+        <label>URL da Imagem (opcional)</label>
+        <input type="text" id="fImagem" placeholder="https://…"/>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('formOverlay')">Cancelar</button>
+      <button class="btn-save" onclick="saveProduct()">Salvar Produto</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DELETE -->
+<div class="overlay" id="deleteOverlay">
+  <div class="modal modal-delete" style="max-width:400px">
+    <div class="modal-header">
+      <h2 class="modal-title">Excluir Produto</h2>
+      <button class="btn-close" onclick="closeModal('deleteOverlay')">✕</button>
+    </div>
+    <p class="modal-body">Tem certeza que deseja excluir <strong id="deleteProductName"></strong>? Esta ação não pode ser desfeita.</p>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('deleteOverlay')">Cancelar</button>
+      <button class="btn-delete-confirm" onclick="confirmDelete()">Sim, excluir</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="../js/api.js"></script>
+<script>
+  // ── estado ────────────────────────────────────────────────
+  let allProducts  = [];
+  let allBrands    = [];
+  let activeBrand  = '';
+  let activeSearch = '';
+  let deleteId     = null;
+
+  // ── init ─────────────────────────────────────────────────
+  window.addEventListener('DOMContentLoaded', () => {
+    // redireciona se não estiver logado
+    if (!localStorage.getItem('token')) window.location.href = '../index.html';
+    loadBrands();
+    loadProducts();
+  });
+
+  // ── carregar marcas ───────────────────────────────────────
+  async function loadBrands() {
+    try {
+      const brands = await API.getBrands();
+      allBrands = brands;
+      renderBrandChips(brands);
+    } catch {
+      // usa marcas padrão se back-end não disponível
+      allBrands = ['Eudora','Natura','Boticario','Avon','MAC','Quem Disse Berenice'];
+      renderBrandChips(allBrands);
+    }
+  }
+
+  function renderBrandChips(brands) {
+    const wrap = document.getElementById('brandChips');
+    wrap.innerHTML = `<span class="chip all ${activeBrand===''?'active':''}" onclick="selectBrand('')">Todas</span>`;
+    brands.forEach(b => {
+      const el = document.createElement('span');
+      el.className = `chip ${activeBrand===b?'active':''}`;
+      el.textContent = b;
+      el.onclick = () => selectBrand(b);
+      wrap.appendChild(el);
+    });
+  }
+
+  function filterBrandChips(query) {
+    const filtered = allBrands.filter(b => b.toLowerCase().includes(query.toLowerCase()));
+    renderBrandChips(filtered);
+  }
+
+  function selectBrand(brand) {
+    activeBrand = brand;
+    renderBrandChips(allBrands);
+    applyFilters();
+  }
+
+  // ── carregar produtos ─────────────────────────────────────
+  async function loadProducts() {
+    try {
+      allProducts = await API.getProducts();
+    } catch {
+      // dados mock para demonstração
+      allProducts = mockProducts();
+    }
+    applyFilters();
+  }
+
+  function applyFilters() {
+    let list = [...allProducts];
+    if (activeBrand)  list = list.filter(p => p.marca === activeBrand);
+    if (activeSearch) list = list.filter(p =>
+      p.nome.toLowerCase().includes(activeSearch.toLowerCase()) ||
+      (p.marca||'').toLowerCase().includes(activeSearch.toLowerCase())
+    );
+    renderTable(list);
+    renderMiniGrid(list.slice(0,4));
+  }
+
+  function onSearch(val) {
+    activeSearch = val;
+    applyFilters();
+  }
+
+  // ── renderizar tabela ─────────────────────────────────────
+  function renderTable(products) {
+    const tbody = document.getElementById('productsTbody');
+    if (!products.length) {
+      tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="icon">🔍</div><p>Nenhum produto encontrado.</p></div></td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = products.map(p => {
+      const stock    = p.estoque || 0;
+      const pct      = Math.min(100, stock);
+      const level    = pct >= 50 ? 'high' : pct >= 20 ? 'medium' : 'low';
+      const imgTag   = p.imagem_url
+        ? `<img class="prod-img" src="${p.imagem_url}" alt="${p.nome}" onerror="this.style.display='none';this.nextSibling.style.display='flex'">`
+        : '';
+      const placeholder = `<div class="prod-img-placeholder" ${p.imagem_url?'style="display:none"':''}>💄</div>`;
+
+      return `
+        <tr>
+          <td>${imgTag}${placeholder}</td>
+          <td><strong>${p.nome}</strong></td>
+          <td><span class="brand-tag">${p.marca||'—'}</span></td>
+          <td>${p.categoria||'—'}</td>
+          <td>R$ ${fmtMoney(p.preco_custo)}</td>
+          <td>R$ ${fmtMoney(p.preco_venda)}</td>
+          <td>
+            <div class="stock-bar-wrap">
+              <div class="stock-bar">
+                <div class="stock-fill ${level}" style="width:${pct}%"></div>
+              </div>
+              <span style="font-size:12px;color:var(--muted)">${stock}</span>
+            </div>
+          </td>
+          <td>
+            <div class="actions">
+              <button class="btn-icon" title="Editar" onclick="openEditModal(${p.id})">✏️</button>
+              <button class="btn-icon delete" title="Excluir" onclick="openDeleteModal(${p.id},'${p.nome.replace(/'/g,"\\'")}')">🗑️</button>
+            </div>
+          </td>
+        </tr>`;
+    }).join('');
+  }
+
+  function renderMiniGrid(products) {
+    const grid = document.getElementById('miniGrid');
+    grid.innerHTML = products.map(p => `
+      <div class="mini-card">
+        <img src="${p.imagem_url||''}" alt="${p.nome}" onerror="this.src=''">
+        <div>${p.nome}</div>
+        <div style="color:var(--rose);font-weight:500;margin-top:2px">R$ ${fmtMoney(p.preco_venda)}</div>
+      </div>
+    `).join('');
+  }
+
+  // ── modal criar ───────────────────────────────────────────
+  function openCreateModal() {
+    clearForm();
+    document.getElementById('formTitle').textContent = 'Novo Produto';
+    document.getElementById('productId').value = '';
+    openModal('formOverlay');
+  }
+
+  // ── modal editar ──────────────────────────────────────────
+  function openEditModal(id) {
+    const p = allProducts.find(x => x.id === id);
+    if (!p) return;
+    document.getElementById('formTitle').textContent = 'Editar Produto';
+    document.getElementById('productId').value     = p.id;
+    document.getElementById('fNome').value          = p.nome;
+    document.getElementById('fMarca').value         = p.marca||'';
+    document.getElementById('fCategoria').value     = p.categoria||'';
+    document.getElementById('fPrecoCusto').value    = p.preco_custo||'';
+    document.getElementById('fPrecoVenda').value    = p.preco_venda||'';
+    document.getElementById('fEstoque').value       = p.estoque||'';
+    document.getElementById('fImagem').value        = p.imagem_url||'';
+    openModal('formOverlay');
+  }
+
+  // ── salvar ────────────────────────────────────────────────
+  async function saveProduct() {
+    const id = document.getElementById('productId').value;
+    const payload = {
+      nome:        document.getElementById('fNome').value.trim(),
+      marca:       document.getElementById('fMarca').value,
+      categoria:   document.getElementById('fCategoria').value,
+      preco_custo: parseFloat(document.getElementById('fPrecoCusto').value) || 0,
+      preco_venda: parseFloat(document.getElementById('fPrecoVenda').value) || 0,
+      estoque:     parseInt(document.getElementById('fEstoque').value)      || 0,
+      imagem_url:  document.getElementById('fImagem').value.trim(),
+    };
+
+    if (!payload.nome) { showToast('Informe o nome do produto.', 'error'); return; }
+
+    try {
+      if (id) {
+        await API.updateProduct(id, payload);
+        showToast('Produto atualizado!', 'success');
+      } else {
+        await API.createProduct(payload);
+        showToast('Produto criado!', 'success');
+      }
+      closeModal('formOverlay');
+      await loadProducts();
+    } catch (err) {
+      showToast(err.message || 'Erro ao salvar.', 'error');
+    }
+  }
+
+  // ── excluir ───────────────────────────────────────────────
+  function openDeleteModal(id, name) {
+    deleteId = id;
+    document.getElementById('deleteProductName').textContent = name;
+    openModal('deleteOverlay');
+  }
+
+  async function confirmDelete() {
+    try {
+      await API.deleteProduct(deleteId);
+      showToast('Produto excluído.', 'success');
+      closeModal('deleteOverlay');
+      await loadProducts();
+    } catch (err) {
+      showToast(err.message || 'Erro ao excluir.', 'error');
+    }
+  }
+
+  // ── helpers UI ────────────────────────────────────────────
+  function openModal(id)  { document.getElementById(id).classList.add('open'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+  function clearForm() {
+    ['fNome','fPrecoCusto','fPrecoVenda','fEstoque','fImagem'].forEach(i => document.getElementById(i).value='');
+    document.getElementById('fMarca').value    = '';
+    document.getElementById('fCategoria').value = '';
+  }
+
+  let toastTimer;
+  function showToast(msg, type='') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className   = `toast show ${type}`;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.className = 'toast', 3200);
+  }
+
+  function fmtMoney(v) {
+    return (v||0).toFixed(2).replace('.',',');
+  }
+
+  // ── fechar overlay clicando fora ──────────────────────────
+  document.querySelectorAll('.overlay').forEach(ov => {
+    ov.addEventListener('click', e => { if (e.target === ov) ov.classList.remove('open'); });
+  });
+
+  // ── mock data (remove quando back-end estiver pronto) ─────
+  function mockProducts() {
+    return [
+      { id:1, nome:'Matefix Lipstick', marca:'Eudora',    categoria:'Batom / Lipstick',   preco_custo:12,  preco_venda:29.90, estoque:85, imagem_url:'' },
+      { id:2, nome:'Chronos Firming Cream', marca:'Natura',   categoria:'Creme / Cosmetics',  preco_custo:35,  preco_venda:89.90, estoque:42, imagem_url:'' },
+      { id:3, nome:'Floratta Red',     marca:'Boticario', categoria:'Perfume',            preco_custo:55,  preco_venda:129,   estoque:18, imagem_url:'' },
+      { id:4, nome:'Esmalte Glamour',  marca:'Eudora',    categoria:'Esmalte / Nail polish', preco_custo:6,  preco_venda:15.90, estoque:7,  imagem_url:'' },
+      { id:5, nome:'Batom Matte Ruby', marca:'Avon',      categoria:'Batom / Lipstick',   preco_custo:9,   preco_venda:22.90, estoque:55, imagem_url:'' },
+    ];
+  }
+</script>
+</body>
+</html>
