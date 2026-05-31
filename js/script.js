@@ -52,6 +52,7 @@
     const ok  = document.getElementById('cadOk');
     err.classList.remove('show'); ok.classList.remove('show');
 
+    // RESTRIÇOES
     if (!nome || !email || !senha || !confirm) { err.textContent = 'Preencha todos os campos.'; err.classList.add('show'); return; }
     if (senha.length < 6) { err.textContent = 'Senha deve ter ao menos 6 caracteres.'; err.classList.add('show'); return; }
     if (senha !== confirm) { err.textContent = 'As senhas não coincidem.'; err.classList.add('show'); return; }
@@ -71,6 +72,7 @@
     setTimeout(() => tab('login'), 1500);
   }
 
+  // Usabilidade
   document.addEventListener('keydown', e => { if (e.key === 'Enter') {
     if (document.getElementById('p-login').classList.contains('active')) login();
     else cadastrar();

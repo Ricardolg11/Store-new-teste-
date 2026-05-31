@@ -8,7 +8,6 @@
 </head>
 <body>
 
-<!-- TOPBAR -->
 <div class="topbar">
   <strong>Store da Nail</strong>
   <input type="text" id="gSearch" placeholder="Pesquisar produto…" oninput="onSearch(this.value)"/>
@@ -18,14 +17,13 @@
 
 <div class="layout">
 
-  <!-- SIDEBAR -->
   <div class="sidebar">
     <h3>Filtrar por marca</h3>
     <input type="text" id="brandInput" placeholder="Buscar marca…" oninput="filterChips(this.value)"/>
     <div class="chips" id="chips"></div>
   </div>
 
-  <!-- MAIN -->
+
   <div class="main">
     <div class="main-header">
       <div>
@@ -54,7 +52,6 @@
   </div>
 </div>
 
-<!-- MODAL FORM -->
 <div class="overlay" id="formOverlay">
   <div class="modal">
     <h3 id="formTitle">Novo Produto</h3>
@@ -112,7 +109,6 @@
   </div>
 </div>
 
-<!-- MODAL DELETE -->
 <div class="overlay" id="delOverlay">
   <div class="modal" style="max-width:360px">
     <h3>Excluir Produto</h3>
@@ -128,6 +124,5 @@
 
 <script src="../js/api.js"></script>
 <script src="scriptcatalogo.js"></script>
-
 </body>
 </html>

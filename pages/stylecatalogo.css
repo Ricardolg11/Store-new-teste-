@@ -4,7 +4,7 @@
         font-family: Arial, sans-serif; background: #f0f0f0; 
     }
 
-    /* TOPBAR */
+  
     .topbar {
       background: #fff;
       border-bottom: 1px solid #ccc;
@@ -38,10 +38,10 @@
     }
     .topbar button:hover { background: #111; }
 
-    /* LAYOUT */
+  
     .layout { display: flex; min-height: calc(100vh - 52px); }
 
-    /* SIDEBAR */
+  
     .sidebar {
       width: 200px;
       background: #fff;
@@ -73,7 +73,6 @@
     .chip:hover { background: #eee; }
     .chip.active { background: #333; color: #fff; border-color: #333; }
 
-    /* MAIN */
     .main { flex: 1; padding: 20px; }
 
     .main-header {
@@ -96,7 +95,6 @@
     }
     button.add:hover { background: #111; }
 
-    /* TABLE */
     .table-wrap {
       background: #fff;
       border: 1px solid #ccc;
@@ -152,7 +150,6 @@
 
     .empty { text-align: center; padding: 40px; color: #888; font-size: 14px; }
 
-    /* MODAL */
     .overlay {
       display: none;
       position: fixed; inset: 0;
@@ -222,7 +219,6 @@
 
     .del-msg { font-size: 14px; color: #555; margin-bottom: 20px; line-height: 1.5; }
 
-    /* TOAST */
     .toast {
       position: fixed;
       bottom: 20px; right: 20px;

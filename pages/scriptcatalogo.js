@@ -131,6 +131,7 @@
     };
     if (!p.nome) { toast('Informe o nome do produto.'); return; }
 
+//  Existe ou nao(entao cria) o Produto
     try {
       if (id) await API.updateProduct(id, p); else await API.createProduct(p);
       await carregarProdutos();
