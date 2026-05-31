@@ -9,22 +9,9 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    :root {
-      --rose:      #c9796a;
-      --rose-lt:   #e8b4ac;
-      --cream:     #fdf6f0;
-      --warm:      #f5ebe3;
-      --brown:     #7a4f3a;
-      --text:      #2e1c14;
-      --muted:     #9c7b6e;
-      --border:    #e2d2ca;
-      --white:     #ffffff;
-      --shadow:    0 8px 40px rgba(122,79,58,.12);
-    }
-
     body {
       font-family: 'DM Sans', sans-serif;
-      background: var(--cream);
+      background: #fdf6f0;
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -33,12 +20,11 @@
       overflow: hidden;
     }
 
-    /* background blobs */
     body::before {
       content: '';
       position: fixed;
       width: 520px; height: 520px;
-      background: radial-gradient(circle, var(--rose-lt) 0%, transparent 70%);
+      background: radial-gradient(circle, #e8b4ac 0%, transparent 70%);
       top: -140px; right: -140px;
       border-radius: 50%;
       opacity: .45;
@@ -54,12 +40,12 @@
     }
 
     .card {
-      background: var(--white);
+      background: #ffffff;
       border-radius: 24px;
       padding: 52px 48px;
       width: 100%;
       max-width: 440px;
-      box-shadow: var(--shadow);
+      box-shadow: 0 8px 40px rgba(122,79,58,.12);
       position: relative;
       z-index: 1;
       animation: fadeUp .6s ease both;
@@ -74,17 +60,17 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 36px;
+      margin-bottom: 32px;
     }
 
     .brand-icon {
       width: 44px; height: 44px;
-      background: linear-gradient(135deg, var(--rose), var(--brown));
+      background: linear-gradient(135deg, #c9796a, #7a4f3a);
       border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
       font-family: 'Cormorant Garamond', serif;
       font-size: 20px;
-      color: white;
+      color: #ffffff;
       font-weight: 600;
     }
 
@@ -92,55 +78,86 @@
       font-family: 'Cormorant Garamond', serif;
       font-size: 22px;
       font-weight: 600;
-      color: var(--text);
+      color: #2e1c14;
       letter-spacing: .3px;
     }
 
-    h1 {
+    /* abas login / cadastro */
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid #e2d2ca;
+      margin-bottom: 28px;
+      gap: 0;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 0;
+      background: none;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: #9c7b6e;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: color .2s, border-color .2s;
+    }
+
+    .tab-btn.active {
+      color: #c9796a;
+      border-bottom-color: #c9796a;
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeUp .3s ease both; }
+
+    h2 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 32px;
+      font-size: 26px;
       font-weight: 600;
-      color: var(--text);
-      line-height: 1.15;
-      margin-bottom: 6px;
+      color: #2e1c14;
+      line-height: 1.2;
+      margin-bottom: 4px;
     }
 
     .subtitle {
-      font-size: 14px;
-      color: var(--muted);
-      margin-bottom: 36px;
+      font-size: 13px;
+      color: #9c7b6e;
+      margin-bottom: 24px;
     }
 
-    .field { margin-bottom: 20px; }
+    .field { margin-bottom: 18px; }
 
     label {
       display: block;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 500;
-      color: var(--brown);
+      color: #7a4f3a;
       text-transform: uppercase;
       letter-spacing: .8px;
-      margin-bottom: 8px;
+      margin-bottom: 7px;
     }
 
     input[type="email"],
     input[type="password"],
     input[type="text"] {
       width: 100%;
-      padding: 14px 16px;
-      border: 1.5px solid var(--border);
+      padding: 13px 16px;
+      border: 1.5px solid #e2d2ca;
       border-radius: 12px;
       font-family: 'DM Sans', sans-serif;
-      font-size: 15px;
-      color: var(--text);
-      background: var(--warm);
+      font-size: 14px;
+      color: #2e1c14;
+      background: #f5ebe3;
       outline: none;
       transition: border-color .2s, background .2s;
     }
 
     input:focus {
-      border-color: var(--rose);
-      background: var(--white);
+      border-color: #c9796a;
+      background: #ffffff;
     }
 
     .pass-wrap { position: relative; }
@@ -150,27 +167,26 @@
       right: 14px; top: 50%;
       transform: translateY(-50%);
       background: none; border: none;
-      cursor: pointer; color: var(--muted);
-      font-size: 18px; line-height: 1;
+      cursor: pointer; color: #9c7b6e;
+      font-size: 17px; line-height: 1;
     }
 
-    .error-msg {
+    .msg-box {
       display: none;
-      background: #fdecea;
-      border: 1px solid #f5c6c0;
-      color: #c0392b;
       border-radius: 10px;
       padding: 10px 14px;
       font-size: 13px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
-    .error-msg.show { display: block; }
+    .msg-box.show { display: block; }
+    .msg-box.error   { background: #fdecea; border: 1px solid #f5c6c0; color: #c0392b; }
+    .msg-box.success { background: #eaf7f0; border: 1px solid #a8dfc4; color: #1e7a4b; }
 
     .btn-primary {
       width: 100%;
-      padding: 15px;
-      background: linear-gradient(135deg, var(--rose) 0%, var(--brown) 100%);
-      color: white;
+      padding: 14px;
+      background: linear-gradient(135deg, #c9796a 0%, #7a4f3a 100%);
+      color: #ffffff;
       border: none;
       border-radius: 12px;
       font-family: 'DM Sans', sans-serif;
@@ -179,22 +195,47 @@
       cursor: pointer;
       letter-spacing: .3px;
       transition: opacity .2s, transform .15s;
-      margin-top: 8px;
+      margin-top: 6px;
     }
 
     .btn-primary:hover { opacity: .92; transform: translateY(-1px); }
     .btn-primary:active { transform: translateY(0); }
+    .btn-primary.loading { pointer-events: none; opacity: .7; }
 
-    .btn-primary.loading {
-      pointer-events: none;
-      opacity: .7;
+    /* credenciais de teste */
+    .test-hint {
+      background: #f5ebe3;
+      border: 1px dashed #e2d2ca;
+      border-radius: 10px;
+      padding: 11px 14px;
+      margin-top: 20px;
+      font-size: 12px;
+      color: #7a4f3a;
+      line-height: 1.7;
     }
+
+    .test-hint strong { font-weight: 600; }
+
+    .btn-autofill {
+      display: inline-block;
+      margin-top: 6px;
+      background: none;
+      border: 1px solid #c9796a;
+      color: #c9796a;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+    .btn-autofill:hover { background: #c9796a; color: #ffffff; }
 
     .footer-note {
       text-align: center;
       font-size: 12px;
-      color: var(--muted);
-      margin-top: 28px;
+      color: #9c7b6e;
+      margin-top: 24px;
     }
   </style>
 </head>
@@ -206,69 +247,215 @@
     <span class="brand-name">Store da Nail</span>
   </div>
 
-  <h1>Bem-vinda,<br><em>Érica</em> 👋</h1>
-  <p class="subtitle">Acesse o painel de gestão da sua loja</p>
-
-  <div class="error-msg" id="errorMsg">E-mail ou senha incorretos. Tente novamente.</div>
-
-  <div class="field">
-    <label for="email">E-mail</label>
-    <input type="email" id="email" placeholder="erica@storedanail.com" autocomplete="username" />
+  <!-- abas -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('login')">Entrar</button>
+    <button class="tab-btn" onclick="switchTab('cadastro')">Criar conta</button>
   </div>
 
-  <div class="field">
-    <label for="password">Senha</label>
-    <div class="pass-wrap">
-      <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" />
-      <button class="toggle-pass" id="togglePass" type="button" title="Mostrar senha">👁</button>
+  <!-- ── PAINEL LOGIN ── -->
+  <div class="tab-panel active" id="panel-login">
+    <h2>Bem-vinda de volta 👋</h2>
+    <p class="subtitle">Acesse o painel de gestão da sua loja</p>
+
+    <div class="msg-box error" id="loginError"></div>
+
+    <div class="field">
+      <label for="loginEmail">E-mail</label>
+      <input type="email" id="loginEmail" placeholder="erica@storedanail.com" autocomplete="username"/>
+    </div>
+
+    <div class="field">
+      <label for="loginPassword">Senha</label>
+      <div class="pass-wrap">
+        <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password"/>
+        <button class="toggle-pass" onclick="toggleVis('loginPassword')" type="button">👁</button>
+      </div>
+    </div>
+
+    <button class="btn-primary" id="btnLogin" onclick="handleLogin()">Entrar</button>
+
+    <!-- usuário de teste -->
+    <div class="test-hint">
+      🧪 <strong>Usuário de teste (sem back-end):</strong><br>
+      E-mail: <strong>teste@storedanail.com</strong><br>
+      Senha: <strong>teste123</strong><br>
+      <button class="btn-autofill" onclick="autofill()">Preencher automaticamente</button>
     </div>
   </div>
 
-  <button class="btn-primary" id="btnLogin" onclick="handleLogin()">Entrar</button>
+  <!-- ── PAINEL CADASTRO ── -->
+  <div class="tab-panel" id="panel-cadastro">
+    <h2>Criar conta</h2>
+    <p class="subtitle">Preencha os dados para se cadastrar</p>
+
+    <div class="msg-box error"   id="cadastroError"></div>
+    <div class="msg-box success" id="cadastroSuccess"></div>
+
+    <div class="field">
+      <label for="cadNome">Nome completo</label>
+      <input type="text" id="cadNome" placeholder="Érica Silva"/>
+    </div>
+
+    <div class="field">
+      <label for="cadEmail">E-mail</label>
+      <input type="email" id="cadEmail" placeholder="erica@storedanail.com"/>
+    </div>
+
+    <div class="field">
+      <label for="cadPassword">Senha</label>
+      <div class="pass-wrap">
+        <input type="password" id="cadPassword" placeholder="Mínimo 6 caracteres"/>
+        <button class="toggle-pass" onclick="toggleVis('cadPassword')" type="button">👁</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="cadConfirm">Confirmar senha</label>
+      <div class="pass-wrap">
+        <input type="password" id="cadConfirm" placeholder="Repita a senha"/>
+        <button class="toggle-pass" onclick="toggleVis('cadConfirm')" type="button">👁</button>
+      </div>
+    </div>
+
+    <button class="btn-primary" id="btnCadastro" onclick="handleCadastro()">Criar conta</button>
+  </div>
 
   <p class="footer-note">Store da Nail © 2025 — Sistema de Gestão</p>
 </div>
 
 <script src="js/api.js"></script>
 <script>
-  // toggle password visibility
-  document.getElementById('togglePass').addEventListener('click', function() {
-    const input = document.getElementById('password');
-    input.type = input.type === 'password' ? 'text' : 'password';
+  /* ── usuário de teste embutido ────────────────────────── */
+  const TEST_USER = {
+    email:    'teste@storedanail.com',
+    password: 'teste123',
+    name:     'Usuário Teste',
+  };
+
+  /* ── trocar aba ──────────────────────────────────────── */
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach((b,i) =>
+      b.classList.toggle('active', (i===0 && tab==='login') || (i===1 && tab==='cadastro'))
+    );
+    document.getElementById('panel-login').classList.toggle('active',    tab==='login');
+    document.getElementById('panel-cadastro').classList.toggle('active', tab==='cadastro');
+  }
+
+  /* ── toggle senha ────────────────────────────────────── */
+  function toggleVis(id) {
+    const el = document.getElementById(id);
+    el.type = el.type === 'password' ? 'text' : 'password';
+  }
+
+  /* ── preencher automático ────────────────────────────── */
+  function autofill() {
+    document.getElementById('loginEmail').value    = TEST_USER.email;
+    document.getElementById('loginPassword').value = TEST_USER.password;
+  }
+
+  /* ── login ───────────────────────────────────────────── */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      if (document.getElementById('panel-login').classList.contains('active')) handleLogin();
+      else handleCadastro();
+    }
   });
 
-  // press Enter to login
-  document.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
-
   async function handleLogin() {
-    const email    = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
+    const email    = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
     const btn      = document.getElementById('btnLogin');
-    const errEl    = document.getElementById('errorMsg');
+    const errEl    = document.getElementById('loginError');
 
     errEl.classList.remove('show');
 
     if (!email || !password) {
       errEl.textContent = 'Preencha e-mail e senha.';
-      errEl.classList.add('show');
-      return;
+      errEl.classList.add('show'); return;
     }
 
     btn.textContent = 'Entrando…';
     btn.classList.add('loading');
 
+    /* ── verifica usuário de teste primeiro ── */
+    const registrados = JSON.parse(localStorage.getItem('users') || '[]');
+    const todos = [TEST_USER, ...registrados];
+    const match = todos.find(u => u.email === email && u.password === password);
+
+    if (match) {
+      localStorage.setItem('token', 'mock-token-local');
+      localStorage.setItem('user', JSON.stringify({ name: match.name, email: match.email }));
+      window.location.href = 'pages/catalogo.html';
+      return;
+    }
+
+    /* ── tenta API real ── */
     try {
       const result = await API.login(email, password);
-      // salva token e redireciona
       localStorage.setItem('token', result.token);
       localStorage.setItem('user', JSON.stringify(result.user));
       window.location.href = 'pages/catalogo.html';
     } catch (err) {
-      errEl.textContent = err.message || 'Erro ao conectar com o servidor.';
+      errEl.textContent = err.message || 'E-mail ou senha incorretos.';
       errEl.classList.add('show');
       btn.textContent = 'Entrar';
       btn.classList.remove('loading');
     }
+  }
+
+  /* ── cadastro ────────────────────────────────────────── */
+  async function handleCadastro() {
+    const nome     = document.getElementById('cadNome').value.trim();
+    const email    = document.getElementById('cadEmail').value.trim();
+    const senha    = document.getElementById('cadPassword').value;
+    const confirm  = document.getElementById('cadConfirm').value;
+    const btn      = document.getElementById('btnCadastro');
+    const errEl    = document.getElementById('cadastroError');
+    const okEl     = document.getElementById('cadastroSuccess');
+
+    errEl.classList.remove('show');
+    okEl.classList.remove('show');
+
+    if (!nome || !email || !senha || !confirm) {
+      errEl.textContent = 'Preencha todos os campos.';
+      errEl.classList.add('show'); return;
+    }
+    if (senha.length < 6) {
+      errEl.textContent = 'A senha deve ter no mínimo 6 caracteres.';
+      errEl.classList.add('show'); return;
+    }
+    if (senha !== confirm) {
+      errEl.textContent = 'As senhas não coincidem.';
+      errEl.classList.add('show'); return;
+    }
+
+    btn.textContent = 'Cadastrando…';
+    btn.classList.add('loading');
+
+    /* ── tenta API real; se falhar, salva local ── */
+    try {
+      await API.register({ name: nome, email, password: senha });
+      okEl.textContent = 'Conta criada! Faça login para continuar.';
+      okEl.classList.add('show');
+      setTimeout(() => switchTab('login'), 1800);
+    } catch {
+      /* salva localmente como fallback */
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      if (users.find(u => u.email === email) || email === TEST_USER.email) {
+        errEl.textContent = 'Este e-mail já está cadastrado.';
+        errEl.classList.add('show');
+      } else {
+        users.push({ name: nome, email, password: senha });
+        localStorage.setItem('users', JSON.stringify(users));
+        okEl.textContent = '✅ Conta criada localmente! Agora faça login.';
+        okEl.classList.add('show');
+        setTimeout(() => switchTab('login'), 1800);
+      }
+    }
+
+    btn.textContent = 'Criar conta';
+    btn.classList.remove('loading');
   }
 </script>
 </body>
