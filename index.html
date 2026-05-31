@@ -1,100 +1,67 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Store da Nail — Login</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <div class="card">
-  <div class="brand">
-    <div class="brand-icon">SN</div>
-    <span class="brand-name">Store da Nail</span>
-  </div>
+  <h1>Store da Nail</h1>
+  <p class="sub">Sistema de Gestão</p>
 
-  <!-- abas -->
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('login')">Entrar</button>
-    <button class="tab-btn" onclick="switchTab('cadastro')">Criar conta</button>
+    <button class="tab active" onclick="tab('login')">Entrar</button>
+    <button class="tab"        onclick="tab('cadastro')">Criar conta</button>
   </div>
 
-  <!-- ── PAINEL LOGIN ── -->
-  <div class="tab-panel active" id="panel-login">
-    <h2>Bem-vinda de volta 👋</h2>
-    <p class="subtitle">Acesse o painel de gestão da sua loja</p>
-
-    <div class="msg-box error" id="loginError"></div>
-
+  <!-- LOGIN -->
+  <div class="panel active" id="p-login">
+    <div class="err" id="loginErr"></div>
     <div class="field">
-      <label for="loginEmail">E-mail</label>
-      <input type="email" id="loginEmail" placeholder="erica@storedanail.com" autocomplete="username"/>
+      <label>E-mail</label>
+      <input type="email" id="lEmail" placeholder="email@exemplo.com"/>
     </div>
-
     <div class="field">
-      <label for="loginPassword">Senha</label>
-      <div class="pass-wrap">
-        <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password"/>
-        <button class="toggle-pass" onclick="toggleVis('loginPassword')" type="button">👁</button>
-      </div>
+      <label>Senha</label>
+      <input type="password" id="lSenha" placeholder="••••••••"/>
     </div>
+    <button class="primary" onclick="login()">Entrar</button>
 
-    <button class="btn-primary" id="btnLogin" onclick="handleLogin()">Entrar</button>
-
-    <!-- usuário de teste -->
-    <div class="test-hint">
-      🧪 <strong>Usuário de teste (sem back-end):</strong><br>
-      E-mail: <strong>teste@storedanail.com</strong><br>
-      Senha: <strong>teste123</strong><br>
-      <button class="btn-autofill" onclick="autofill()">Preencher automaticamente</button>
+    <div class="hint">
+      🧪 <strong>Usuário de teste:</strong><br>
+      E-mail: teste@storedanail.com<br>
+      Senha: teste123<br>
+      <button onclick="autofill()">Preencher</button>
     </div>
   </div>
 
-  <!-- ── PAINEL CADASTRO ── -->
-  <div class="tab-panel" id="panel-cadastro">
-    <h2>Criar conta</h2>
-    <p class="subtitle">Preencha os dados para se cadastrar</p>
-
-    <div class="msg-box error"   id="cadastroError"></div>
-    <div class="msg-box success" id="cadastroSuccess"></div>
-
+  <!-- CADASTRO -->
+  <div class="panel" id="p-cadastro">
+    <div class="err" id="cadErr"></div>
+    <div class="ok"  id="cadOk"></div>
     <div class="field">
-      <label for="cadNome">Nome completo</label>
-      <input type="text" id="cadNome" placeholder="Érica Silva"/>
+      <label>Nome</label>
+      <input type="text"     id="cNome"    placeholder="Seu nome"/>
     </div>
-
     <div class="field">
-      <label for="cadEmail">E-mail</label>
-      <input type="email" id="cadEmail" placeholder="erica@storedanail.com"/>
+      <label>E-mail</label>
+      <input type="email"    id="cEmail"   placeholder="email@exemplo.com"/>
     </div>
-
     <div class="field">
-      <label for="cadPassword">Senha</label>
-      <div class="pass-wrap">
-        <input type="password" id="cadPassword" placeholder="Mínimo 6 caracteres"/>
-        <button class="toggle-pass" onclick="toggleVis('cadPassword')" type="button">👁</button>
-      </div>
+      <label>Senha</label>
+      <input type="password" id="cSenha"   placeholder="Mínimo 6 caracteres"/>
     </div>
-
     <div class="field">
-      <label for="cadConfirm">Confirmar senha</label>
-      <div class="pass-wrap">
-        <input type="password" id="cadConfirm" placeholder="Repita a senha"/>
-        <button class="toggle-pass" onclick="toggleVis('cadConfirm')" type="button">👁</button>
-      </div>
+      <label>Confirmar senha</label>
+      <input type="password" id="cConfirm" placeholder="Repita a senha"/>
     </div>
-
-    <button class="btn-primary" id="btnCadastro" onclick="handleCadastro()">Criar conta</button>
+    <button class="primary" onclick="cadastrar()">Criar conta</button>
   </div>
-
-  <p class="footer-note">Store da Nail © 2025 — Sistema de Gestão</p>
 </div>
 
 <script src="js/api.js"></script>
 <script src="js/script.js"></script>
- 
 </body>
 </html>
