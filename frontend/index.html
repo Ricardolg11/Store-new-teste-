@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Store da Nail — Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="card">
+  <h1>Store da Nail</h1>
+  <p class="sub">Sistema de Gestão</p>
+
+  <div class="tabs">
+    <button class="tab active" onclick="tab('login')">Entrar</button>
+    <button class="tab"        onclick="tab('cadastro')">Criar conta</button>
+  </div>
+
+
+  <div class="panel active" id="p-login">
+    <div class="err" id="loginErr"></div>
+    <div class="field">
+      <label>E-mail</label>
+      <input type="email" id="lEmail" placeholder="email@exemplo.com"/>
+    </div>
+    <div class="field">
+      <label>Senha</label>
+      <input type="password" id="lSenha" placeholder="••••••••"/>
+    </div>
+    <button class="primary" onclick="login()">Entrar</button>
+
+    <!-- <div class="hint">
+      🧪 <strong>Usuário de teste:</strong><br>
+      E-mail: teste@storedanail.com<br>
+      Senha: teste123<br>
+      <button onclick="autofill()">Preencher</button>
+    </div> -->
+  </div>
+
+  <div class="panel" id="p-cadastro">
+    <div class="err" id="cadErr"></div>
+    <div class="ok"  id="cadOk"></div>
+    <div class="field">
+      <label>Nome</label>
+      <input type="text"     id="cNome"    placeholder="Seu nome"/>
+    </div>
+    <div class="field">
+      <label>E-mail</label>
+      <input type="email"    id="cEmail"   placeholder="email@exemplo.com"/>
+    </div>
+    <div class="field">
+      <label>Senha</label>
+      <input type="password" id="cSenha"   placeholder="Mínimo 6 caracteres"/>
+    </div>
+    <div class="field">
+      <label>Confirmar senha</label>
+      <input type="password" id="cConfirm" placeholder="Repita a senha"/>
+    </div>
+    <button class="primary" onclick="cadastrar()">Criar conta</button>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>
