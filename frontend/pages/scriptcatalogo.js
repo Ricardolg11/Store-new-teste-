@@ -72,10 +72,9 @@
       return `
         <tr>
           <td><strong>${p.vch_nome}</strong></td>
-          <td><span class="brand-ztag">${p.marca||'—'}</span></td>
-          <td>${p.categoria||'—'}</td>
-          <td>R$ ${fmt(p.preco_custo)}</td>
-          <td>R$ ${fmt(p.num_preco)}</td>
+          <td><span class="brand-ztag">${p.vch_marca||'—'}</span></td>
+          <td>${p.vch_categoria||'—'}</td>
+          <td>R$ 0,00</td> <td>R$ ${fmt(p.num_preco)}</td>
           <td>
             <div class="stock-wrap">
               <div class="stock-bar"><div class="stock-fill ${nivel}" style="width:${pct}%"></div></div>
@@ -100,22 +99,22 @@
     abrir('formOverlay');
   }
 
-  function abrirEditar(id) {
-    const p = produtos.find(x => x.id===id); if(!p) return;
+ function abrirEditar(id) {
+    const p = produtos.find(x => x.cod_produto == id); 
+    if(!p) return;
+    
     document.getElementById('formTitle').textContent = 'Editar Produto';
-    document.getElementById('fId').value      = p.id;
-    document.getElementById('fNome').value    = p.nome;
-    document.getElementById('fMarca').value   = p.marca||'';
-    document.getElementById('fCategoria').value = p.categoria||'';
-    document.getElementById('fCusto').value   = p.preco_custo||'';
-    document.getElementById('fVenda').value   = p.preco_venda||'';
-    document.getElementById('fEstoque').value = p.estoque||'';
-    document.getElementById('fImagem').value  = p.imagem_url||'';
+    document.getElementById('fId').value        = p.cod_produto;
+    document.getElementById('fNome').value      = p.vch_nome || '';
+    document.getElementById('fMarca').value     = p.vch_marca || '';
+    document.getElementById('fCategoria').value = p.vch_categoria || '';
+    document.getElementById('fVenda').value     = p.num_preco || '';
+    document.getElementById('fEstoque').value   = p.int_quantidade || '';
     abrir('formOverlay');
   }
 
   async function salvar() {
-  const id = document.getElementById('fId').value; // 
+  const id = document.getElementById('fId').value;
   
   const p = {
     vch_nome: document.getElementById('fNome').value.trim(),
@@ -123,20 +122,31 @@
     vch_categoria: document.getElementById('fCategoria').value,
     num_preco: parseFloat(document.getElementById('fVenda').value) || 0, 
     int_quantidade: parseInt(document.getElementById('fEstoque').value) || 0,
-    dat_validade: '2026-12-31'
+    dat_validade: '2026-12-31' 
   };
 
   if (!p.vch_nome) { toast('Informe o nome do produto.'); return; }
 
   try {
+    // Tenta salvar na API oficial
     if (id) await API.updateProduct(id, p); 
     else await API.createProduct(p);
     
     await carregarProdutos();
   } catch (e) {
     console.error("Falha ao comunicar com a API:", e);
-    toast('Erro ao salvar. Verifique se o back-end está rodando.');
-    return;
+    
+    if (id) { 
+      // Busca pelo id antigo ou pelo cod_produto novo
+      const i = produtos.findIndex(x => (x.cod_produto || x.id) == id); 
+      if (i > -1) produtos[i] = { ...produtos[i], ...p }; 
+    } else { 
+      // Salva localmente gerando um ID novo
+      produtos.push({ cod_produto: nextId++, ...p }); 
+    }
+    
+    salvarLocal(); 
+    aplicar();
   }
   
   toast(id ? 'Produto atualizado!' : 'Produto criado!');
@@ -179,13 +189,8 @@
 
   function fmt(v) { return (v||0).toFixed(2).replace('.',','); }
 
-  function mockInicial() {
-    return [
-      { id:1, nome:'Matefix Lipstick',      marca:'Eudora',    categoria:'Batom / Lipstick',      preco_custo:12, preco_venda:29.90, estoque:85, imagem_url:'' },
-      { id:2, nome:'Chronos Firming Cream', marca:'Natura',    categoria:'Creme / Cosmetics',     preco_custo:35, preco_venda:89.90, estoque:42, imagem_url:'' },
-      { id:3, nome:'Floratta Red',          marca:'Boticario', categoria:'Perfume',               preco_custo:55, preco_venda:129,   estoque:18, imagem_url:'' },
-      { id:4, nome:'Esmalte Glamour',       marca:'Eudora',    categoria:'Esmalte / Nail polish', preco_custo:6,  preco_venda:15.90, estoque:7,  imagem_url:'' },
-      { id:5, nome:'Batom Matte Ruby',      marca:'Avon',      categoria:'Batom / Lipstick',      preco_custo:9,  preco_venda:22.90, estoque:55, imagem_url:'' },
-      { id:6, nome:'Perfume Humor',         marca:'Natura',    categoria:'Perfume',               preco_custo:48, preco_venda:110,   estoque:30, imagem_url:'' },
-    ];
-  }
+ function mockInicial() {
+  return [
+    { cod_produto: 1, vch_nome: 'Matefix Lipstick', vch_marca: 'Eudora', vch_categoria: 'Batom / Lipstick', num_preco: 29.90, int_quantidade: 85, imagem_url: '' },
+  ];
+}

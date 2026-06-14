@@ -1,4 +1,4 @@
-const BASE_URL = 'https://curly-space-broccoli-p64wp6p6rvqfgr-5500.app.github.dev';
+const BASE_URL = 'https://curly-space-broccoli-p64wp6p6rvqfgr-3000.app.github.dev';
 
 function getToken() { return localStorage.getItem('token') || ''; }
 
@@ -7,11 +7,29 @@ async function req(method, path, body = null) {
     method,
     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` }
   };
+  
   if (body) opts.body = JSON.stringify(body);
+  
   const res = await fetch(BASE_URL + path, opts);
-  if (res.status === 401) { localStorage.clear(); window.location.href = '/index.html'; }
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.message || 'Erro ' + res.status);
+  
+  if (res.status === 401) { 
+    localStorage.clear(); 
+    window.location.href = '/index.html'; 
+    return;
+  }
+  
+  let data;
+  try {
+    // Tenta ler como JSON. Se o servidor devolver HTML (erro 404/405), ele falha com segurança
+    data = await res.json();
+  } catch (err) {
+    data = { message: 'Servidor offline ou rota não encontrada.' };
+  }
+  
+  if (!res.ok) {
+    throw new Error(data.message || 'Erro ' + res.status);
+  }
+  
   return data;
 }
 
