@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = 'https://curly-space-broccoli-p64wp6p6rvqfgr-5500.app.github.dev';
 
 function getToken() { return localStorage.getItem('token') || ''; }
 
@@ -16,11 +16,18 @@ async function req(method, path, body = null) {
 }
 
 const API = {
-  login:         (email, password)  => req('POST', '/auth/login',    { email, password }),
-  register:      (data)             => req('POST', '/auth/register',  data),
-  getProducts:   (brand='',search='') => req('GET', `/products?brand=${brand}&search=${search}`),
-  createProduct: (p)                => req('POST', '/products',       p),
-  updateProduct: (id, p)            => req('PUT',  `/products/${id}`, p),
-  deleteProduct: (id)               => req('DELETE',`/products/${id}`),
-  getBrands:     ()                 => req('GET',  '/brands'),
+  login: (email, password) => 
+    req('POST', '/auth/login', { vch_email: email, vch_senha: password }),
+    
+  register: (data) => 
+    req('POST', '/auth/register', { vch_nome: data.name, vch_email: data.email, vch_senha: data.password }),
+    
+  getProducts: (brand='', search='') => 
+    req('GET', `/products?brand=${brand}&search=${search}`),
+    
+  // funções de CRUD recebem e enviam o padrão do banco
+  createProduct: (p) => req('POST', '/products', p),
+  updateProduct: (id, p) => req('PUT',  `/products/${id}`, p),
+  deleteProduct: (id) => req('DELETE', `/products/${id}`),
+  getBrands: () => req('GET', '/brands'),
 };

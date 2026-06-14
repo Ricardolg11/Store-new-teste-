@@ -71,11 +71,11 @@
       const nivel = pct>=50?'high':pct>=20?'medium':'low';
       return `
         <tr>
-          <td><strong>${p.nome}</strong></td>
-          <td><span class="brand-tag">${p.marca||'—'}</span></td>
+          <td><strong>${p.vch_nome}</strong></td>
+          <td><span class="brand-ztag">${p.marca||'—'}</span></td>
           <td>${p.categoria||'—'}</td>
           <td>R$ ${fmt(p.preco_custo)}</td>
-          <td>R$ ${fmt(p.preco_venda)}</td>
+          <td>R$ ${fmt(p.num_preco)}</td>
           <td>
             <div class="stock-wrap">
               <div class="stock-bar"><div class="stock-fill ${nivel}" style="width:${pct}%"></div></div>
@@ -84,8 +84,8 @@
           </td>
           <td>
             <div class="actions">
-              <button class="btn-edit" onclick="abrirEditar(${p.id})">Editar</button>
-              <button class="btn-del"  onclick="abrirDel(${p.id},'${p.nome.replace(/'/g,"\\'")}')">Excluir</button>
+              <button class="btn-edit" onclick="abrirEditar(${p.cod_produto})">Editar</button>
+              <button class="btn-del" onclick="abrirDel(${p.cod_produto || p.id}, '${(p.vch_nome || p.nome || '').replace(/'/g,"\\'")}')">Excluir</button>
             </div>
           </td>
         </tr>`;
@@ -115,30 +115,33 @@
   }
 
   async function salvar() {
-    const id = document.getElementById('fId').value;
-    const p  = {
-      nome:        document.getElementById('fNome').value.trim(),
-      marca:       document.getElementById('fMarca').value,
-      categoria:   document.getElementById('fCategoria').value,
-      preco_custo: parseFloat(document.getElementById('fCusto').value)||0,
-      preco_venda: parseFloat(document.getElementById('fVenda').value)||0,
-      estoque:     parseInt(document.getElementById('fEstoque').value)||0,
-      imagem_url:  document.getElementById('fImagem').value.trim(),
-    };
-    if (!p.nome) { toast('Informe o nome do produto.'); return; }
+  const id = document.getElementById('fId').value; // 
+  
+  const p = {
+    vch_nome: document.getElementById('fNome').value.trim(),
+    vch_marca: document.getElementById('fMarca').value,
+    vch_categoria: document.getElementById('fCategoria').value,
+    num_preco: parseFloat(document.getElementById('fVenda').value) || 0, 
+    int_quantidade: parseInt(document.getElementById('fEstoque').value) || 0,
+    dat_validade: '2026-12-31'
+  };
 
-//  Existe ou nao(entao cria) o Produto
-    try {
-      if (id) await API.updateProduct(id, p); else await API.createProduct(p);
-      await carregarProdutos();
-    } catch {
-      if (id) { const i = produtos.findIndex(x=>x.id==id); if(i>-1) produtos[i]={...produtos[i],...p}; }
-      else    { produtos.push({ id: nextId++, ...p }); }
-      salvarLocal(); aplicar();
-    }
-    toast(id ? 'Produto atualizado!' : 'Produto criado!');
-    fechar('formOverlay');
+  if (!p.vch_nome) { toast('Informe o nome do produto.'); return; }
+
+  try {
+    if (id) await API.updateProduct(id, p); 
+    else await API.createProduct(p);
+    
+    await carregarProdutos();
+  } catch (e) {
+    console.error("Falha ao comunicar com a API:", e);
+    toast('Erro ao salvar. Verifique se o back-end está rodando.');
+    return;
   }
+  
+  toast(id ? 'Produto atualizado!' : 'Produto criado!');
+  fechar('formOverlay');
+}
 
   function abrirDel(id, nome) {
     delId = id;
