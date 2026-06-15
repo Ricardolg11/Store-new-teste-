@@ -55,19 +55,19 @@ app.get('/products', async (req, res) => {
 // Rota 3: Criar um produto novo
 app.post('/products', async (req, res) => {
   try {
-    const { vch_nome, vch_marca, num_preco, vch_categoria, int_quantidade } = req.body;
+    const { vch_nome, vch_marca, num_preco, vch_categoria } = req.body;
     const query = `
-      INSERT INTO tb_produto (vch_nome, vch_marca, num_preco, vch_categoria, int_quantidade) 
-      VALUES ($1, $2, $3, $4, $5) RETURNING *
+      INSERT INTO tb_produto (vch_nome, vch_marca, num_preco, vch_categoria) 
+      VALUES ($1, $2, $3, $4) RETURNING *
     `;
-    const values = [vch_nome, vch_marca, num_preco, vch_categoria, int_quantidade || 0];
+    const values = [vch_nome, vch_marca, num_preco, vch_categoria];
     const result = await pool.query(query, values);
     
     res.status(201).json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-});
+}); 
 
 // Rota 4: Deletar um produto
 app.delete('/products/:id', async (req, res) => {
@@ -90,19 +90,20 @@ app.delete('/products/:id', async (req, res) => {
 app.put('/products/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { vch_nome, vch_marca, num_preco, vch_categoria, int_quantidade } = req.body;
+    const { vch_nome, vch_marca, num_preco, vch_categoria } = req.body;
     const query = `
       UPDATE tb_produto 
-      SET vch_nome = $1, vch_marca = $2, num_preco = $3, vch_categoria = $4, int_quantidade = $5 
-      WHERE cod_produto = $6 RETURNING *
+      SET vch_nome = $1, vch_marca = $2, num_preco = $3, vch_categoria = $4 
+      WHERE cod_produto = $5 RETURNING *
     `;
-    const values = [vch_nome, vch_marca, num_preco, vch_categoria, int_quantidade || 0, id];
+    const values = [vch_nome, vch_marca, num_preco, vch_categoria, id];
     const result = await pool.query(query, values);
     res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
 // Inicia o servidor na porta 3000
 app.listen(3000, () => {
   console.log('Servidor Back-End rodando na porta 3000!');
