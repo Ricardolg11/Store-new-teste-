@@ -20,7 +20,7 @@ async function req(method, path, body = null) {
   
   let data;
   try {
-    // Tenta ler como JSON. Se o servidor devolver HTML (erro 404/405), ele falha com segurança
+    // tenta ler como JSON. Se o servidor devolver HTML (erro 404/405), ele falha com segurança
     data = await res.json();
   } catch (err) {
     data = { message: 'Servidor offline ou rota não encontrada.' };

@@ -43,18 +43,21 @@
 
   function salvarLocal() { localStorage.setItem(PKEY, JSON.stringify(produtos)); }
 
-  function aplicar() {
+ function aplicar() {
     let lista = [...produtos];
-    if (marcaAtiva) lista = lista.filter(p => p.marca === marcaAtiva);
+    if (marcaAtiva) lista = lista.filter(p => p.vch_marca === marcaAtiva); 
+    
     if (busca)      lista = lista.filter(p =>
-      p.nome.toLowerCase().includes(busca) ||
-      (p.marca||'').toLowerCase().includes(busca) ||
-      (p.categoria||'').toLowerCase().includes(busca)
+      (p.vch_nome || '').toLowerCase().includes(busca) ||
+      (p.vch_marca || '').toLowerCase().includes(busca) ||
+      (p.vch_categoria || '').toLowerCase().includes(busca)
     );
+    
     if (sortKey) lista.sort((a,b) => {
       const av = a[sortKey]??'', bv = b[sortKey]??'';
       return sortAsc ? (av>bv?1:av<bv?-1:0) : (av<bv?1:av>bv?-1:0);
     });
+    
     document.getElementById('countLabel').textContent = `${lista.length} produto(s)`;
     renderTabela(lista);
   }
@@ -67,7 +70,8 @@
     const tb = document.getElementById('tbody');
     if (!lista.length) { tb.innerHTML = `<tr><td colspan="7"><div class="empty">Nenhum produto encontrado.</div></td></tr>`; return; }
     tb.innerHTML = lista.map(p => {
-      const pct   = Math.min(100, p.estoque||0);
+      // CORREÇÃO: Trocando p.estoque por p.int_quantidade
+      const pct   = Math.min(100, p.int_quantidade || 0);
       const nivel = pct>=50?'high':pct>=20?'medium':'low';
       return `
         <tr>
@@ -78,7 +82,7 @@
           <td>
             <div class="stock-wrap">
               <div class="stock-bar"><div class="stock-fill ${nivel}" style="width:${pct}%"></div></div>
-              <span>${p.estoque||0}</span>
+              <span>${p.int_quantidade || 0}</span>
             </div>
           </td>
           <td>

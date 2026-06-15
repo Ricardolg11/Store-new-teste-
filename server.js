@@ -28,23 +28,22 @@ app.get('/brands', async (req, res) => {
   }
 });
 
-// Rota 2: Buscar todos os produtos (com filtro opcional)
+// rota 2: Buscar todos os produtos 
 app.get('/products', async (req, res) => {
   try {
-    const { brand, search } = req.query;
-    let query = 'SELECT * FROM tb_produto WHERE 1=1';
-    let values = [];
-
-    if (brand) {
-      values.push(brand);
-      query += ` AND vch_marca = $${values.length}`;
-    }
-    
-    if (search) {
-      values.push(`%${search}%`);
-      query += ` AND vch_nome ILIKE $${values.length}`;
-    }
-
+    const query = `
+      SELECT 
+        p.cod_produto, 
+        p.vch_nome, 
+        p.vch_marca, 
+        p.num_preco, 
+        p.vch_categoria,
+        COALESCE(SUM(l.int_quantidade), 0)::integer AS int_quantidade
+      FROM tb_produto p
+      LEFT JOIN tb_lote l ON p.cod_produto = l.cod_produto
+      GROUP BY p.cod_produto, p.vch_nome, p.vch_marca, p.num_preco, p.vch_categoria
+      ORDER BY p.cod_produto;
+    `;
     const result = await pool.query(query);
     res.json(result.rows);
   } catch (err) {
@@ -86,7 +85,7 @@ app.delete('/products/:id', async (req, res) => {
   }
 });
 
-// Rota 5: Atualizar (Editar) um produto
+// Rota 5: Atualizar um produto
 app.put('/products/:id', async (req, res) => {
   try {
     const { id } = req.params;
