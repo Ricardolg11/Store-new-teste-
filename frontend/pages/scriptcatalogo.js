@@ -165,8 +165,9 @@
     toast('Produto excluído.');
     fechar('delOverlay');
     aplicar();
+    window.location.reload();
   }
-
+ 
   // ── helpers ───────────────────────────────────────────
   function abrir(id)  { document.getElementById(id).classList.add('open'); }
   function fechar(id) { document.getElementById(id).classList.remove('open'); }
@@ -187,7 +188,7 @@
     clearTimeout(tt); tt = setTimeout(()=>el.classList.remove('show'), 2800);
   }
 
-  function fmt(v) { return (v||0).toFixed(2).replace('.',','); }
+  function fmt(v) {return parseFloat(v || 0).toFixed(2).replace('.', ',');}
 
  function mockInicial() {
   return [
