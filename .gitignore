@@ -1,0 +1,12 @@
+# Dependências do Node.js
+node_modules/
+
+# Configurações locais do editor do desenvolvedor
+.vscode/
+
+# Arquivos de log de erros
+npm-debug.log*
+yarn-error.log*
+
+# Variáveis de ambiente (senhas e chaves)
+.env
